@@ -29,7 +29,7 @@ if(isset($_REQUEST['frob'])){
 	$request = 'http://api.flickr.com/services/rest?method='.$apiMethod.'&api_key='.APIKEY.'&api_sig='.$apiSigHash.'&auth_token='.$token[0].'&user_id='.$userId[0].'&per_page=12';
 	$photosXml = new SimpleXMLElement(file_get_contents($request));
 ?>
-<table>
+		<table>
 <?php
 	//Display recent photos
 	$count = 0;
@@ -45,10 +45,10 @@ if(isset($_REQUEST['frob'])){
 		$photoSecret = $photo['secret'];
 		$photoUrl = "http://farm{$farmId}.static.flickr.com/{$serverId}/{$photoId}_{$photoSecret}_m.jpg";
 		$photoPageUrl = "http://www.flickr.com/photos/{$userId[0]}/{$photoId}";
-		echo '<td class="imgcell"><a href="'.$photoPageUrl.'"><img height="150px" id="'.$photoId.'" src="'.$photoUrl.'" /></a></td>';
+		echo '<td class="imgcell"><a href="'.$photoPageUrl.'"><img height="150px" id="'.$photoId.'" src="'.$photoUrl.'" /></a></td>'. "\n";
 		if($count%3 == 2){
 			?>
-			</tr>
+		</tr>
 			<?php
 		}
 		$count++;
