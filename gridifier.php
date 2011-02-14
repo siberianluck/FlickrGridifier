@@ -24,20 +24,38 @@ if(isset($_REQUEST['frob'])){
 
 	//get recent photos
 	$apiMethod = 'flickr.photos.search';
-	$apiSig = APISECRET."api_key".APIKEY."auth_token".$token[0]."method".$apiMethod."per_page20"."user_id".$userId[0];
+	$apiSig = APISECRET."api_key".APIKEY."auth_token".$token[0]."method".$apiMethod."per_page12"."user_id".$userId[0];
 	$apiSigHash = md5($apiSig);
-	$request = 'http://api.flickr.com/services/rest?method='.$apiMethod.'&api_key='.APIKEY.'&api_sig='.$apiSigHash.'&auth_token='.$token[0].'&user_id='.$userId[0].'&per_page=20';
+	$request = 'http://api.flickr.com/services/rest?method='.$apiMethod.'&api_key='.APIKEY.'&api_sig='.$apiSigHash.'&auth_token='.$token[0].'&user_id='.$userId[0].'&per_page=12';
 	$photosXml = new SimpleXMLElement(file_get_contents($request));
-
+?>
+<table>
+<?php
 	//Display recent photos
+	$count = 0;
 	foreach($photosXml->photos->photo as $photo){
+		if($count%3 == 0){
+		?>
+		<tr>
+		<?php
+		}
 		$farmId = $photo['farm'];
 		$serverId = $photo['server'];
 		$photoId = $photo['id'];
 		$photoSecret = $photo['secret'];
-		$photoUrl = "http://farm{$farmId}.static.flickr.com/{$serverId}/{$photoId}_{$photoSecret}_s.jpg";
-		echo '<img id="'.$photoId.'" src="'.$photoUrl.'" /> ';
+		$photoUrl = "http://farm{$farmId}.static.flickr.com/{$serverId}/{$photoId}_{$photoSecret}_m.jpg";
+		$photoPageUrl = "http://www.flickr.com/photos/{$userId[0]}/{$photoId}";
+		echo '<td class="imgcell"><a href="'.$photoPageUrl.'"><img height="150px" id="'.$photoId.'" src="'.$photoUrl.'" /></a></td>';
+		if($count%3 == 2){
+			?>
+			</tr>
+			<?php
+		}
+		$count++;
 	}
+	?>
+	</table>
+	<?php
 
 }
 else{

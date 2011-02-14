@@ -1,0 +1,8 @@
+table{
+	border-spacing: 4px;
+}
+.imgcell img, .imgcell a{
+	display: block;
+	height: 150px;
+	border: none;
+}
