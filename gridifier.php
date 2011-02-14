@@ -1,3 +1,10 @@
+<!DOCTYPE html>
+	<html>
+		<head>
+			<title>12 on 12 gridifier</title>
+			<link rel="stylesheet" href="style.css" />
+		</head>
+		<body>
 <?php
 require_once 'config.php';
 
@@ -21,7 +28,7 @@ if(isset($_REQUEST['frob'])){
 	$apiSigHash = md5($apiSig);
 	$request = 'http://api.flickr.com/services/rest?method='.$apiMethod.'&api_key='.APIKEY.'&api_sig='.$apiSigHash.'&auth_token='.$token[0].'&user_id='.$userId[0].'&per_page=20';
 	$photosXml = new SimpleXMLElement(file_get_contents($request));
-	
+
 	//Display recent photos
 	foreach($photosXml->photos->photo as $photo){
 		$farmId = $photo['farm'];
@@ -50,3 +57,5 @@ else{
 
 
 ?>
+</body>
+</html>
