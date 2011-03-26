@@ -1,33 +1,8 @@
-img, a{
+table{
+	border-spacing: 4px;
+}
+.imgcell img, .imgcell a{
+	display: block;
+	height: 150px;
 	border: none;
-}
-body {
-	font-size: 36pt;
-	font-family: 'VanillaWhaleRegular', Arial, sans-serif;
-	background-image: url(background.png);
-	font-weight: lighter;
-	color: #013D00;
-}
-#login{
-	text-align: center;
-}
-#grid, #code{
-	background-image: none;
-	background-color: #ffffff;
-	padding: 10px;
-	border-radius: 20px;
-	-moz-border-radius: 20px;
-	width: 700px;
-	border: solid 3px black;
-}
-#code{
-	overflow: hidden;
-}
-table {
-	margin-left: auto;
-	margin-right: auto;
-}
-#title{
-	font-size: 44pt;
-	text-align: center;
 }

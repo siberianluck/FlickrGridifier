@@ -3,9 +3,6 @@
 		<head>
 			<title>12 on 12 gridifier</title>
 			<link rel="stylesheet" href="style.css" />
-			<link rel="stylesheet" href="font/font.css" />
-			<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-			<script src="gridifier.js"></script>
 		</head>
 		<body>
 <?php
@@ -33,8 +30,6 @@ if(isset($_REQUEST['frob'])){
 	$request = 'http://api.flickr.com/services/rest?method='.$apiMethod.'&api_key='.APIKEY.'&api_sig='.$apiSigHash.'&auth_token='.$token[0].'&user_id='.$userId[0].'&per_page=12';
 	$photosXml = new SimpleXMLElement(file_get_contents($request));
 ?>
-		<span>Your Grid Preview:</span><br />
-		<div id="grid">
 		<table style="border-spacing: 4px">
 <?php
 	//start code string
@@ -66,13 +61,11 @@ if(isset($_REQUEST['frob'])){
 	}
 	?>
 	</table>
-	</div>
 	<?php
 	$codeString .= "</table>";
 	?>
-	<span>Copy Paste This Code Into Blogger!</span><br />
 	<form>
-		<textarea rows="20" id="code"><?php echo $codeString ?></textarea>
+		<textarea cols="120" rows="20"><?php echo $codeString ?></textarea>
 	</form>
 	<?php
 
@@ -83,10 +76,17 @@ else{
 	$apiSigHash = md5($apiSig);
 	$loginUrl = "http://flickr.com/services/auth/?api_key=".APIKEY."&perms=read&api_sig=$apiSigHash";
 
-	echo "<div id=\"title\"><span>12 On 12 Gridifier</span></div><br />";
-	echo "<div id=\"login\"><span>Login With</span><br />";
-	echo "<a href=\"$loginUrl\"><img height=\"100px\" src=\"Flickr-logo.png\" /></a></div>";
+	echo "<h3>Login with:";
+	echo "<a href=\"$loginUrl\"><img height=\"30px\" src=\"Flickr-logo.png\" /></a></h3>";
 }
+
+//Create blank grid
+
+//Button to do output
+
+//Send output code
+
+
 ?>
 </body>
 </html>
