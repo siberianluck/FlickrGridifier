@@ -80,7 +80,7 @@ if(isset($_REQUEST['frob'])){
 else{
 	//Instantiate flickr api
 	$api = new Flickr_API(array(
-				'api_key' = APIKEY;	
+				'api_key' = APIKEY	
 			));
 	//create login url
 	$loginUrl = getAuthUrl('read');
