@@ -10,6 +10,7 @@
 		<body>
 <?php
 require_once 'config.php';
+require_once 'Flickr/API.php';
 
 //Authenticate flickr user
 if(isset($_REQUEST['frob'])){
@@ -77,10 +78,15 @@ if(isset($_REQUEST['frob'])){
 
 }
 else{
+	//Instantiate flickr api
+	$api = new Flickr_API(array(
+				'api_key' = APIKEY;	
+			));
 	//create login url
-	$apiSig = APISECRET."api_key".APIKEY."permsread";
-	$apiSigHash = md5($apiSig);
-	$loginUrl = "http://flickr.com/services/auth/?api_key=".APIKEY."&perms=read&api_sig=$apiSigHash";
+	$loginUrl = getAuthUrl('read');
+	//$apiSig = APISECRET."api_key".APIKEY."permsread";
+	//$apiSigHash = md5($apiSig);
+	//$loginUrl = "http://flickr.com/services/auth/?api_key=".APIKEY."&perms=read&api_sig=$apiSigHash";
 
 	echo "<div id=\"title\"><span>12 On 12 Gridifier</span></div><br />";
 	echo "<div id=\"login\"><span>Login With</span><br />";
