@@ -78,10 +78,13 @@ if(isset($_REQUEST['frob'])){
 
 }
 else{
+	//instantiate api
+	$api = new Flickr_API(array(
+				api_key => APIKEY,
+				api_secret => APISECRET	
+			));
 	//create login url
-	$apiSig = APISECRET."api_key".APIKEY."permsread";
-	$apiSigHash = md5($apiSig);
-	$loginUrl = "http://flickr.com/services/auth/?api_key=".APIKEY."&perms=read&api_sig=$apiSigHash";
+	$loginUrl = $api->getAuthUrl('read');
 
 	echo "<div id=\"title\"><span>12 On 12 Gridifier</span></div><br />";
 	echo "<div id=\"login\"><span>Login With</span><br />";
