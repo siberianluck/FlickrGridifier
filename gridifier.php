@@ -11,27 +11,23 @@
 <?php
 require_once 'config.php';
 require_once 'Flickr/API.php';
+require_once 'phpFlickr/phpFlickr.php';
 
 //Authenticate flickr user
 if(isset($_REQUEST['frob'])){
-	$apiMethod = 'flickr.auth.getToken';
-	$apiSig = APISECRET."api_key".APIKEY."frob".$_REQUEST['frob']."method".$apiMethod;
-	$apiSigHash = md5($apiSig);
+	//instantiate api
+	$fApi = new phpFlickr(APIKEY, APISECRET);
 
 	//get auth token
-	$request = 'http://api.flickr.com/services/rest/?method='.$apiMethod.'&api_key='.APIKEY.'&frob='.$_REQUEST['frob'].'&api_sig='.$apiSigHash;
-	$response = file_get_contents($request);
-	//load xml
-	$tokenXml = new SimpleXMLElement($response);
-	$token = $tokenXml->auth->token;
-	$userId = $tokenXml->auth->user['nsid'];
+	$response = $fApi->auth_getToken($_REQUEST['frob']);
+
+	$token = $response['token'];
+	$userId = $response['user']['nsid'];
+
+	$fApi->setToken($token);
 
 	//get recent photos
-	$apiMethod = 'flickr.photos.search';
-	$apiSig = APISECRET."api_key".APIKEY."auth_token".$token[0]."method".$apiMethod."per_page12"."user_id".$userId[0];
-	$apiSigHash = md5($apiSig);
-	$request = 'http://api.flickr.com/services/rest?method='.$apiMethod.'&api_key='.APIKEY.'&api_sig='.$apiSigHash.'&auth_token='.$token[0].'&user_id='.$userId[0].'&per_page=12';
-	$photosXml = new SimpleXMLElement(file_get_contents($request));
+	$photos = $fApi->photos_search(array('user_id'=>$userId,'per_page'=>12));
 ?>
 		<span>Your Grid Preview:</span><br />
 		<div id="grid">
@@ -41,7 +37,7 @@ if(isset($_REQUEST['frob'])){
 	$codeString = "<table style=\"border-spacing: 4px\">";
 	//Display recent photos
 	$count = 0;
-	foreach($photosXml->photos->photo as $photo){
+	foreach($photos['photo'] as $photo){
 		if($count%3 == 0){
 		?>
 		<tr>
@@ -78,13 +74,10 @@ if(isset($_REQUEST['frob'])){
 
 }
 else{
-	//instantiate api
-	$api = new Flickr_API(array(
-				api_key => APIKEY,
-				api_secret => APISECRET	
-			));
 	//create login url
-	$loginUrl = $api->getAuthUrl('read');
+	$apiSig = APISECRET."api_key".APIKEY."permsread";
+	$apiSigHash = md5($apiSig);
+	$loginUrl = "http://flickr.com/services/auth/?api_key=".APIKEY."&perms=read&api_sig=$apiSigHash";
 
 	echo "<div id=\"title\"><span>12 On 12 Gridifier</span></div><br />";
 	echo "<div id=\"login\"><span>Login With</span><br />";
